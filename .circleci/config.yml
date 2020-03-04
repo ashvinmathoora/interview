@@ -10,12 +10,9 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: npm install
-            - run: which npm && which node
-            - run: npm --version && node --version
             - run: sudo npm install -g serverless
-            - run: which serverless
-            - run: set 
+            - run: sls invoke -f hello --stage stage --S3BucketName cogeanth-testbucket --DestFile test.txt
+            
 workflows:
     build-and-test:
       jobs:
