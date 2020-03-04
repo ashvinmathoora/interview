@@ -12,6 +12,7 @@ jobs:
           steps:
             - run: sudo npm install -g serverless
             - run: sls invoke local -f hello --stage stage --S3BucketName cogeanth-testbucket --DestFile test.txt
+            - run: sls deploy --stage stage --S3BucketName cogeanth-testbucket --DestFile test.txt
             
 workflows:
     build-and-test:
