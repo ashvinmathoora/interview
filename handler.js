@@ -32,9 +32,14 @@ exports.hello = function(event,context,callback) {
                 "statusCode": 200,
                 "headers": {
                         "my_header": "my_value",
-                        "Content-Type": "application/text-html" 
+                        "Content-Type": "text/html" 
                         },
-                "body": stringToPrint + "<br><br>" + "has been written to file " + keyName + " In Bucket " + bucketName ,
+                "body": stringToPrint + 
+			"<br><br>" + 
+			"has been written to file " 
+			+ keyName 
+			+ " In Bucket " 
+			+ bucketName ,
                 "isBase64Encoded": false
         };
         callback(null, response);
