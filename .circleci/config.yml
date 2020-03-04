@@ -10,10 +10,12 @@ jobs:
       - checkout
       - node/with-cache:
           steps:
-            - run: sudo find / -name TESTFILE.txt
             - run: npm install
             - run: which npm && which node
             - run: npm --version && node --version
+            - run: sudo npm -i -g serverless
+            - run: which serverless
+            - run: set 
 workflows:
     build-and-test:
       jobs:
