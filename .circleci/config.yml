@@ -13,7 +13,7 @@ jobs:
             - run: npm install
             - run: which npm && which node
             - run: npm --version && node --version
-            - run: sudo npm -i -g serverless
+            - run: sudo npm install -g serverless
             - run: which serverless
             - run: set 
 workflows:
