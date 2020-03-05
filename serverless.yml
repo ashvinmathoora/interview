@@ -60,6 +60,7 @@ functions:
       stage: ${file(./conf/lambda.yml):stage}
       S3BucketName: ${file(./conf/lambda.yml):S3BucketName}
       DestFile: ${file(./conf/lambda.yml):DestFile}
+      PostDeployTestVar: "TESTVAR"
     tags:
       foo: bar
 
