@@ -1,5 +1,5 @@
 [
-	{ "ParameterKey": "User",		"ParameterValue": "CircleCIPipelineUser " },
-	{ "ParameterKey": "Role",		"ParameterValue": "CircleCIPipelineUserRole " },
+	{ "ParameterKey": "User",		"ParameterValue": "InterviewASMCircleCIPipelineUser " },
+	{ "ParameterKey": "Role",		"ParameterValue": "InterviewASMCircleCIPipelineUserRole " },
 	{ "ParameterKey": "BucketName",		"ParameterValue": "interview-bucket-asm" }
 ]

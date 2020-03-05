@@ -1,0 +1,2 @@
+aws cloudformation validate-template --template-body file://user.yaml
+aws cloudformation create-stack --stack-name InterviewASMCircleCIPipelineUser --template-body file://user.yaml --parameters file://user.parameters --capabilities CAPABILITY_NAMED_IAM

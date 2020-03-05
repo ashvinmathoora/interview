@@ -16,18 +16,18 @@ Parameters:
 
 Resources:
 
-  CircleCIPipelineUser:
+  InterviewASMCircleCIPipelineUser:
     Type: AWS::IAM::User
     Properties:
        UserName: !Ref User
 
-  CircleCIPipelineUserAccessKeys:
+  InterviewASMCircleCIPipelineUserAccessKeys:
     Type: AWS::IAM::AccessKey
     Properties:
-       UserName: !Ref CircleCIPipelineUser
+       UserName: !Ref InterviewASMCircleCIPipelineUser
          
 
-  CircleCIPipelineUserRole:
+  InterviewASMCircleCIPipelineUserRole:
      Type: "AWS::IAM::Role"
      Properties:
       RoleName: !Ref Role
@@ -40,18 +40,21 @@ Resources:
               Service:
                 - "cloudformation.amazonaws.com"
               AWS:
-                - !GetAtt CircleCIPipelineUser.Arn
+                - !GetAtt InterviewASMCircleCIPipelineUser.Arn
             Action:
                 - "sts:AssumeRole"
       Path: "/"
 
-  CircleCIPipelineUserRolePolicy:
+  InterviewASMCircleCIPipelineUserRolePolicy:
     Type: "AWS::IAM::Policy"
     Properties:
-      PolicyName: "CircleCIPipelineUserRolePolicy"
+      PolicyName: "InterviewASMCircleCIPipelineUserRolePolicy"
       Roles:
           -
-            Ref: "CircleCIPipelineUserRole"
+            Ref: "InterviewASMCircleCIPipelineUserRole"
+      Users:
+          - 
+            Ref: "InterviewASMCircleCIPipelineUser"
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -72,17 +75,18 @@ Resources:
                - "events:*"
                - "secretsmanager:ListSecrets"
 
-  CircleCIPipelineUserSecretKey:
+  InterviewASMCircleCIPipelineUserSecretKey:
     Type: 'AWS::SecretsManager::Secret'
     Properties:
-      Name: CircleCIPipelineUserSecretKey
+      Name: InterviewASMCircleCIPipelineUserSecretKey
       Description: This secret has a hardcoded password in SecretString for the CircleCI Integration user
-      SecretString: !GetAtt CircleCIPipelineUserAccessKeys.SecretAccessKey
+      SecretString: !Join
+                      - ''
+                      - - !Ref InterviewASMCircleCIPipelineUserAccessKeys 
+                        - ':'
+                        -  !GetAtt InterviewASMCircleCIPipelineUserAccessKeys.SecretAccessKey
 
 Outputs:
 
-   SecretKeyformyaccesskey:
-      Value: !GetAtt CircleCIPipelineUserAccessKeys.SecretAccessKey
-   
    UserArn:
-      Value: !GetAtt CircleCIPipelineUser.Arn
+      Value: !GetAtt InterviewASMCircleCIPipelineUser.Arn
