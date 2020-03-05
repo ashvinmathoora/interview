@@ -25,9 +25,6 @@ provider:
   runtime: ${file(./conf/lambda.yml):runtime}
   stage: ${file(./conf/lambda.yml):stage}
   region: ${file(./conf/lambda.yml):region}
-  deploymentBucket:
-    name: ${file(./conf/lambda.yml):deploymentBucket}
-    blockPublicAccess: true
 
 package:
   exclude:
@@ -118,6 +115,7 @@ resources:
            BlockPublicPolicy: true
            IgnorePublicAcls: true
            RestrictPublicBuckets: true
+
 
   Outputs:
      BucketName:
