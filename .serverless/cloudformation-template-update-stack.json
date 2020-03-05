@@ -56,105 +56,25 @@
         }
       }
     },
-    "HelloLogGroup": {
+    "HelloWorldLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/helloworld-stage-hello"
+        "LogGroupName": "/aws/lambda/helloWorld"
       }
     },
-    "IamRoleLambdaExecution": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "helloworld-stage",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream",
-                    "logs:CreateLogGroup"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/helloworld-stage*:*"
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/helloworld-stage*:*:*"
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ],
-        "Path": "/",
-        "RoleName": {
-          "Fn::Join": [
-            "-",
-            [
-              "helloworld-stage",
-              {
-                "Ref": "AWS::Region"
-              },
-              "lambdaRole"
-            ]
-          ]
-        }
-      }
-    },
-    "HelloLambdaFunction": {
+    "HelloWorldLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/helloworld/stage/1583347606022-2020-03-04T18:46:46.022Z/helloworld.zip"
+          "S3Key": "serverless/helloWorld/stage/1583367360637-2020-03-05T00:16:00.637Z/helloWorld.zip"
         },
-        "FunctionName": "helloworld-stage-hello",
+        "FunctionName": "helloWorld",
         "Handler": "handler.hello",
-        "MemorySize": 1024,
-        "Role": {
-          "Fn::GetAtt": [
-            "IamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
+        "MemorySize": 256,
+        "Role": "arn:aws:iam::226274645393:role/InterviewLambdaASMRole",
         "Runtime": "nodejs10.x",
         "Timeout": 6,
         "Tags": [
@@ -168,30 +88,29 @@
             "environment": "dev",
             "interviewee": "Ashvin Mathoora",
             "stage": "stage",
-            "S3BucketName": "cogeanth-testbucket",
+            "S3BucketName": "interview-bucket-asm",
             "DestFile": "test.txt"
           }
         }
       },
       "DependsOn": [
-        "HelloLogGroup",
-        "IamRoleLambdaExecution"
+        "HelloWorldLogGroup"
       ]
     },
-    "HelloLambdaVersionmnxdXpN4IETDGnz3nbTVODTcNMyq5QId2K3mzhW0": {
+    "HelloWorldLambdaVersionb4rhkGUomDcZ90MG18LJE6yeuc7y7KMdbAIEWFq8FC4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "HelloLambdaFunction"
+          "Ref": "HelloWorldLambdaFunction"
         },
-        "CodeSha256": "+9vFgFV6e/u1s/5LQkuVhoNJ9HIEoA7jXz4lCDudLXM="
+        "CodeSha256": "Hh+kBi703stnpHn4aAkXUL8vFIFRXob8pVjoXwNjd7E="
       }
     },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "stage-helloworld",
+        "Name": "stage-helloWorld",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -246,7 +165,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "HelloLambdaFunction",
+                    "HelloWorldLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -258,7 +177,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1583347602743": {
+    "ApiGatewayDeployment1583367357548": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -270,12 +189,12 @@
         "ApiGatewayMethodHelloGet"
       ]
     },
-    "HelloLambdaPermissionApiGateway": {
+    "HelloWorldLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "HelloLambdaFunction",
+            "HelloWorldLambdaFunction",
             "Arn"
           ]
         },
@@ -306,6 +225,72 @@
           ]
         }
       }
+    },
+    "InterviewLambdaASMRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": "InterviewLambdaASMRole",
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        ]
+      }
+    },
+    "InterviewLambdaASMRolePolicy": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "InterviewLambdaASMRolePolicy",
+        "Roles": [
+          {
+            "Ref": "InterviewLambdaASMRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Resource": [
+                "arn:aws:s3:::interview-bucket-asm",
+                "arn:aws:s3:::interview-bucket-asm/*"
+              ],
+              "Effect": "Allow",
+              "Action": [
+                "s3:Get*",
+                "s3:List*",
+                "s3:Put*"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "S3BucketToWriteTo": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "interview-bucket-asm",
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true
+        }
+      }
     }
   },
   "Outputs": {
@@ -314,10 +299,10 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "HelloLambdaFunctionQualifiedArn": {
+    "HelloWorldLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionmnxdXpN4IETDGnz3nbTVODTcNMyq5QId2K3mzhW0"
+        "Ref": "HelloWorldLambdaVersionb4rhkGUomDcZ90MG18LJE6yeuc7y7KMdbAIEWFq8FC4"
       }
     },
     "ServiceEndpoint": {
@@ -341,6 +326,12 @@
             "/stage"
           ]
         ]
+      }
+    },
+    "BucketName": {
+      "Description": "S3 Bucket Created to Output text file",
+      "Value": {
+        "Ref": "S3BucketToWriteTo"
       }
     }
   }

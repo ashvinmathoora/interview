@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: helloworld
+service: helloWorld
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -31,22 +31,7 @@ package:
   - .git/**
   - .circleci/**
   - .gitignore/**
-
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  - cloudformation/**
 
 # you can define service wide environment variables here
 environment:
@@ -56,12 +41,16 @@ environment:
 
 
 functions:
-  hello:
+  helloWorld:
     handler: handler.hello
+    name: helloWorld
     events:
      - http:
          path: hello
          method: get
+    memorySize: 256
+    role: arn:aws:iam::226274645393:role/InterviewLambdaASMRole
+    runtime: nodejs10.x
     environment:
       environment: dev
       interviewee: "Ashvin Mathoora"
@@ -72,13 +61,58 @@ functions:
       foo: bar
 
 # you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+
+    InterviewLambdaASMRole:
+      Type: "AWS::IAM::Role"
+      Properties:
+       RoleName: InterviewLambdaASMRole
+       AssumeRolePolicyDocument:
+         Version: "2012-10-17"
+         Statement:
+           -
+             Effect: "Allow"
+             Principal:
+               Service:
+                 - "lambda.amazonaws.com"
+             Action:
+                 - "sts:AssumeRole"
+       Path: "/"
+       ManagedPolicyArns:
+           - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+    InterviewLambdaASMRolePolicy:
+     Type: "AWS::IAM::Policy"
+     Properties:
+       PolicyName: "InterviewLambdaASMRolePolicy"
+       Roles:
+           -
+             Ref: "InterviewLambdaASMRole"
+       PolicyDocument:
+         Version: "2012-10-17"
+         Statement:
+           -
+             Resource:
+                - "arn:aws:s3:::${opt:S3BucketName}"
+                - "arn:aws:s3:::${opt:S3BucketName}/*"
+             Effect: "Allow"
+             Action:
+                - s3:Get*
+                - s3:List*
+                - s3:Put*
+
+    S3BucketToWriteTo:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${opt:S3BucketName}
+        PublicAccessBlockConfiguration:
+           BlockPublicAcls: true
+           BlockPublicPolicy: true
+           IgnorePublicAcls: true
+           RestrictPublicBuckets: true
+
+  Outputs:
+     BucketName:
+       Description: "S3 Bucket Created to Output text file"
+       Value: !Ref S3BucketToWriteTo

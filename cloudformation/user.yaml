@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+    This Template is to build the codepipeline to build honeycomb configuration service proxy
+Parameters:
+
+   Role:
+      Type: String
+      Default: InterviewLambdaASMRole
+   BucketName:
+      Type: String
+      Default: interview-bucket-asm
+
+Resources:
+
+  CircleCIPipelineUser:
+    Type: AWS::IAM::User
+    Properties:
+       UserName: CircleCIPipelineUser
+
+  CircleCIPipelineUserAccessKeys:
+    Type: AWS::IAM::AccessKey
+    Properties:
+       UserName: !Ref CircleCIPipelineUser
+         
+
+  CircleCIPipelineUserRole:
+     Type: "AWS::IAM::Role"
+     Properties:
+      RoleName: CircleCIPipelineUserRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "cloudformation.amazonaws.com"
+              AWS:
+                - !GetAtt CircleCIPipelineUser.Arn
+            Action:
+                - "sts:AssumeRole"
+      Path: "/"
+
+  CircleCIPipelineUserRolePolicy:
+    Type: "AWS::IAM::Policy"
+    Properties:
+      PolicyName: "CircleCIPipelineUserRolePolicy"
+      Roles:
+          -
+            Ref: "CircleCIPipelineUserRole"
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Resource: 
+               - "*"
+            Effect: "Allow"
+            Action:
+               - "s3:*"
+               - "cloudformation:*"
+               - "logs:*"
+               - "iam:*"
+               - "apigateway:*"
+               - "lambda:*"
+               - "ec2:DescribeSecurityGroups"
+               - "ec2:DescribeSubnets"
+               - "ec2:DescribeVpcs"
+               - "events:*"
+               - "secretsmanager:ListSecrets"
+
+  CircleCIPipelineUserSecretKey:
+    Type: 'AWS::SecretsManager::Secret'
+    Properties:
+      Name: CircleCIPipelineUserSecretKey
+      Description: This secret has a hardcoded password in SecretString for the CircleCI Integration user
+      SecretString: !GetAtt CircleCIPipelineUserAccessKeys.SecretAccessKey
+
+Outputs:
+
+   SecretKeyformyaccesskey:
+      Value: !GetAtt CircleCIPipelineUserAccessKeys.SecretAccessKey
+   
+   UserArn:
+      Value: !GetAtt CircleCIPipelineUser.Arn
