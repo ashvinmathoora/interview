@@ -10,6 +10,10 @@
       "name": "aws",
       "runtime": "nodejs10.x",
       "region": "eu-west-1",
+      "deploymentBucket": null,
+      "deploymentBucketObject": {
+        "blockPublicAccess": true
+      },
       "versionFunctions": true,
       "remoteFunctionData": null,
       "compiledCloudFormationTemplate": {
@@ -27,6 +31,12 @@
                     }
                   }
                 ]
+              },
+              "PublicAccessBlockConfiguration": {
+                "BlockPublicAcls": true,
+                "BlockPublicPolicy": true,
+                "IgnorePublicAcls": true,
+                "RestrictPublicBuckets": true
               }
             }
           },
@@ -83,7 +93,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/helloWorld/stage/1583412074114-2020-03-05T12:41:14.114Z/helloWorld.zip"
+                "S3Key": "serverless/helloWorld/stage/1583420165959-2020-03-05T14:56:05.959Z/helloWorld.zip"
               },
               "FunctionName": "helloWorld",
               "Handler": "handler.hello",
@@ -108,7 +118,8 @@
                   "interviewee": "Ashvin Mathoora",
                   "stage": "stage",
                   "S3BucketName": "interview-bucket-asm",
-                  "DestFile": "hello.txt"
+                  "DestFile": "hello.txt",
+                  "Version": 0.12
                 }
               }
             },
@@ -117,14 +128,14 @@
               "InterviewLambdaASMRole"
             ]
           },
-          "HelloWorldLambdaVersionelrHwbBMJTz3VVHxzsKXEzMA7HqmRYNb3sXX4uHxc": {
+          "HelloWorldLambdaVersionGmLxTVBt00nkp7wwpEkCzCp1F2pn7wrZxsqSI2mW0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HelloWorldLambdaFunction"
               },
-              "CodeSha256": "YuvwAyOvGljE9gJatdD00R6X6JhxB8z0BSoLAFnMISc="
+              "CodeSha256": "7oeemmSDfpepmZl3Upcu3H0yhZCTlamp0OIGD+v1P1g="
             }
           },
           "ApiGatewayRestApi": {
@@ -197,7 +208,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1583412071013": {
+          "ApiGatewayDeployment1583420162833": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -322,7 +333,7 @@
           "HelloWorldLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloWorldLambdaVersionelrHwbBMJTz3VVHxzsKXEzMA7HqmRYNb3sXX4uHxc"
+              "Ref": "HelloWorldLambdaVersionGmLxTVBt00nkp7wwpEkCzCp1F2pn7wrZxsqSI2mW0"
             }
           },
           "ServiceEndpoint": {
@@ -380,6 +391,12 @@
                     }
                   }
                 ]
+              },
+              "PublicAccessBlockConfiguration": {
+                "BlockPublicAcls": true,
+                "BlockPublicPolicy": true,
+                "IgnorePublicAcls": true,
+                "RestrictPublicBuckets": true
               }
             }
           },
@@ -458,7 +475,8 @@
           "interviewee": "Ashvin Mathoora",
           "stage": "stage",
           "S3BucketName": "interview-bucket-asm",
-          "DestFile": "hello.txt"
+          "DestFile": "hello.txt",
+          "Version": 0.12
         },
         "tags": {
           "foo": "bar"
@@ -467,7 +485,7 @@
         "memory": 256,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "HelloWorldLambdaVersionelrHwbBMJTz3VVHxzsKXEzMA7HqmRYNb3sXX4uHxc"
+        "versionLogicalId": "HelloWorldLambdaVersionGmLxTVBt00nkp7wwpEkCzCp1F2pn7wrZxsqSI2mW0"
       }
     },
     "resources": {
@@ -563,7 +581,7 @@
     "artifact": "/Users/asm/repos/INTERVIEW/interview/.serverless/helloWorld.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/helloWorld/stage/1583412074114-2020-03-05T12:41:14.114Z",
+    "artifactDirectoryName": "serverless/helloWorld/stage/1583420165959-2020-03-05T14:56:05.959Z",
     "artifact": "helloWorld.zip"
   }
 }
