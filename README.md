@@ -35,7 +35,7 @@ this would have been called from a bash script in the bin dir to keep the circle
 
 I then moved onto creating a more parameterized version of the serverless.yml file and the handler.js file to make it more generic and easier to update, as well as trying to figure out how to reference cloudformation resource stack details within serverless.yml. This allowed the conf/lambda.yml file to control variables and pass them through serverless.yml to the helloWorld function. 
 
-## Setup
+## SETUP
 
 Update the conf/lambda.yml file and the cloudformation/user.parameters file to include the bucket name to write to, it is currently set to interview-bucket-asm as I figure this is not going to be taken anywhere
 
@@ -57,6 +57,14 @@ acquire the AWS Access Key and Secret Key from this and configure circleci with 
 
 There should be enough privileges to deploy and setup the api gateway/lambda and s3 buckets.
 
+## CLEAN UP
+
+```
+aws s3 rm s3://interview-bucket-asm/hello.txt
+sls remove 
+aws cloudformation delete-stack --stack-name InterviewASMCircleCIPipelineUser
+```
+
 ## Observations
 
 1. the lambda was running with 1024MB of ram , dropped down to 256 , could have run on 128
@@ -66,3 +74,4 @@ There should be enough privileges to deploy and setup the api gateway/lambda and
 5. I've not chosen a specific deploymentBucket name, but have set it to not be publicly accessible, by default it seems to have public access enabled.
 6. during a sls remove, if the destination bucket still has hello.txt in it it doesn't complete properly, the bucket has to be empty for it to work otherwise you have to manually delete the stack 
 7. I could have added a sls <action> parameter to pass at run time so it could do conditional deploy/remove. 
+8. During the build process, as the destination bucket hasn't been created the local test still passes as it gets a 200 response from running the localambda, but fails to write to the bucket for that first interation, could swap this to execute post deploy, or run a non local sls invoke to the actual deployed lambda.
