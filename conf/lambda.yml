@@ -1,3 +1,4 @@
+deploymentBucket: "com.serverless.deployment.interview.asm"
 interviewee: "Ashvin Mathoora"
 memorySize: 256
 region: eu-west-1
