@@ -6,4 +6,4 @@ servicename: helloWorld
 stage: stage
 S3BucketName: interview-bucket-asm
 DestFile: hello.txt
-Version: 0.11
+Version: 0.12

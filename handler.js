@@ -35,7 +35,8 @@ exports.hello = function(event,context,callback) {
 			"has been written to file " 
 			+ keyName 
 			+ " In Bucket " 
-			+ bucketName ,
+			+ bucketName 
+                        + "<br><br>Version Number: " + process.env.Version ,
                 "isBase64Encoded": false
         };
         callback(null, response);
