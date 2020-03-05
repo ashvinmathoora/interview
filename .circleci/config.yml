@@ -15,10 +15,10 @@ jobs:
                  command: sudo npm install -g serverless
             - run: 
                  name: Run local invocation to ensure correct running
-                 command: sls invoke local -f helloWorld --stage stage --S3BucketName interview-bucket-asm --DestFile test.txt
+                 command: sls invoke local -f helloWorld 
             - run: 
                  name: Deploy to live
-                 command: sls deploy --stage stage --S3BucketName interview-bucket-asm --DestFile test.txt
+                 command: sls deploy 
             
 workflows:
     version: 2

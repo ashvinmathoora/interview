@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: helloWorld
+service: ${file(./conf/lambda.yml):servicename}
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -22,7 +22,7 @@ service: helloWorld
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: ${file(./conf/lambda.yml):runtime}
   stage: ${file(./conf/lambda.yml):stage}
   region: ${file(./conf/lambda.yml):region}
 
@@ -32,6 +32,8 @@ package:
   - .circleci/**
   - .gitignore/**
   - cloudformation/**
+  - bin/**
+  - conf/**
 
 # you can define service wide environment variables here
 environment:
@@ -51,7 +53,7 @@ functions:
     memorySize: ${file(./conf/lambda.yml):memorySize}
     role: 
        !GetAtt InterviewLambdaASMRole.Arn
-    runtime: nodejs10.x
+    runtime: ${file(./conf/lambda.yml):runtime}
     environment:
       environment: dev
       interviewee: ${file(./conf/lambda.yml):interviewee}

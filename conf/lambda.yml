@@ -1,6 +1,8 @@
 interviewee: "Ashvin Mathoora"
 memorySize: 256
 region: eu-west-1
+runtime: nodejs10.x
+servicename: helloWorld
 stage: stage
 S3BucketName: interview-bucket-asm
 DestFile: hello.txt
