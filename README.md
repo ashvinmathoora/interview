@@ -44,7 +44,7 @@ Update conf/lambda.yml to have a new version number
 There are two ways from here:
 1. If you already have aws access keys in circleci with sufficient privileges, and already have linked circleci to the repo, just commit the changes made and this will deploy the lambda
 
-2. If you don't already have an aws access key in circleci for this follow the below:
+2. If you don't already have an aws access key in circleci for this, follow the below using a user with sufficient privileges to create this:
 ```
 cd cloudformation
 aws cloudformation validate-template --template-body file://user.yaml

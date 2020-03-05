@@ -74,6 +74,7 @@ Resources:
                - "ec2:DescribeVpcs"
                - "events:*"
                - "secretsmanager:ListSecrets"
+               - "secretsmanager:DeleteSecret"
 
   InterviewASMCircleCIPipelineUserSecretKey:
     Type: 'AWS::SecretsManager::Secret'
