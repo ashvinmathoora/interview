@@ -3,9 +3,13 @@ Description: >
     This Template is to build the codepipeline to build honeycomb configuration service proxy
 Parameters:
 
+
+   User:
+      Type: String
+      Default: CircleCIPipelineUser
    Role:
       Type: String
-      Default: InterviewLambdaASMRole
+      Default: CircleCIPipelineUserRole
    BucketName:
       Type: String
       Default: interview-bucket-asm
@@ -15,7 +19,7 @@ Resources:
   CircleCIPipelineUser:
     Type: AWS::IAM::User
     Properties:
-       UserName: CircleCIPipelineUser
+       UserName: !Ref User
 
   CircleCIPipelineUserAccessKeys:
     Type: AWS::IAM::AccessKey
@@ -26,7 +30,7 @@ Resources:
   CircleCIPipelineUserRole:
      Type: "AWS::IAM::Role"
      Properties:
-      RoleName: CircleCIPipelineUserRole
+      RoleName: !Ref Role
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:

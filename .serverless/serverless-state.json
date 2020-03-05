@@ -83,12 +83,17 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/helloWorld/stage/1583367360637-2020-03-05T00:16:00.637Z/helloWorld.zip"
+                "S3Key": "serverless/helloWorld/stage/1583410454886-2020-03-05T12:14:14.886Z/helloWorld.zip"
               },
               "FunctionName": "helloWorld",
               "Handler": "handler.hello",
               "MemorySize": 256,
-              "Role": "arn:aws:iam::226274645393:role/InterviewLambdaASMRole",
+              "Role": {
+                "Fn::GetAtt": [
+                  "InterviewLambdaASMRole",
+                  "Arn"
+                ]
+              },
               "Runtime": "nodejs10.x",
               "Timeout": 6,
               "Tags": [
@@ -103,22 +108,23 @@
                   "interviewee": "Ashvin Mathoora",
                   "stage": "stage",
                   "S3BucketName": "interview-bucket-asm",
-                  "DestFile": "test.txt"
+                  "DestFile": "hello.txt"
                 }
               }
             },
             "DependsOn": [
-              "HelloWorldLogGroup"
+              "HelloWorldLogGroup",
+              "InterviewLambdaASMRole"
             ]
           },
-          "HelloWorldLambdaVersionb4rhkGUomDcZ90MG18LJE6yeuc7y7KMdbAIEWFq8FC4": {
+          "HelloWorldLambdaVersionBmVZWAyYZjpL1ct34RWotUcSbDCatlk48V30auDF8A0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "HelloWorldLambdaFunction"
               },
-              "CodeSha256": "Hh+kBi703stnpHn4aAkXUL8vFIFRXob8pVjoXwNjd7E="
+              "CodeSha256": "RoYP/SUC+JdBi/3RwrymDcUqOXq3IkhODt1fe0eMdgA="
             }
           },
           "ApiGatewayRestApi": {
@@ -191,7 +197,7 @@
               "MethodResponses": []
             }
           },
-          "ApiGatewayDeployment1583367357548": {
+          "ApiGatewayDeployment1583410451730": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -316,7 +322,7 @@
           "HelloWorldLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "HelloWorldLambdaVersionb4rhkGUomDcZ90MG18LJE6yeuc7y7KMdbAIEWFq8FC4"
+              "Ref": "HelloWorldLambdaVersionBmVZWAyYZjpL1ct34RWotUcSbDCatlk48V30auDF8A0"
             }
           },
           "ServiceEndpoint": {
@@ -346,6 +352,15 @@
             "Description": "S3 Bucket Created to Output text file",
             "Value": {
               "Ref": "S3BucketToWriteTo"
+            }
+          },
+          "InterviewLambdaASMRoleArn": {
+            "Description": "",
+            "Value": {
+              "Fn::GetAtt": [
+                "InterviewLambdaASMRole",
+                "Arn"
+              ]
             }
           }
         }
@@ -434,14 +449,16 @@
           }
         ],
         "memorySize": 256,
-        "role": "arn:aws:iam::226274645393:role/InterviewLambdaASMRole",
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"HelloWorldLambdaFunction\"][\"Properties\"][\"Role\"]"
+        },
         "runtime": "nodejs10.x",
         "environment": {
           "environment": "dev",
           "interviewee": "Ashvin Mathoora",
           "stage": "stage",
           "S3BucketName": "interview-bucket-asm",
-          "DestFile": "test.txt"
+          "DestFile": "hello.txt"
         },
         "tags": {
           "foo": "bar"
@@ -450,7 +467,7 @@
         "memory": 256,
         "timeout": 6,
         "vpc": {},
-        "versionLogicalId": "HelloWorldLambdaVersionb4rhkGUomDcZ90MG18LJE6yeuc7y7KMdbAIEWFq8FC4"
+        "versionLogicalId": "HelloWorldLambdaVersionBmVZWAyYZjpL1ct34RWotUcSbDCatlk48V30auDF8A0"
       }
     },
     "resources": {
@@ -528,6 +545,15 @@
           "Value": {
             "Ref": "S3BucketToWriteTo"
           }
+        },
+        "InterviewLambdaASMRoleArn": {
+          "Description": "",
+          "Value": {
+            "Fn::GetAtt": [
+              "InterviewLambdaASMRole",
+              "Arn"
+            ]
+          }
         }
       }
     },
@@ -537,7 +563,7 @@
     "artifact": "/Users/asm/repos/INTERVIEW/interview/.serverless/helloWorld.zip"
   },
   "package": {
-    "artifactDirectoryName": "serverless/helloWorld/stage/1583367360637-2020-03-05T00:16:00.637Z",
+    "artifactDirectoryName": "serverless/helloWorld/stage/1583410454886-2020-03-05T12:14:14.886Z",
     "artifact": "helloWorld.zip"
   }
 }

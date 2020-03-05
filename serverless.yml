@@ -49,7 +49,8 @@ functions:
          path: hello
          method: get
     memorySize: ${file(./conf/lambda.yml):memorySize}
-    role: arn:aws:iam::226274645393:role/InterviewLambdaASMRole
+    role: 
+       !GetAtt InterviewLambdaASMRole.Arn
     runtime: nodejs10.x
     environment:
       environment: dev
@@ -116,3 +117,7 @@ resources:
      BucketName:
        Description: "S3 Bucket Created to Output text file"
        Value: !Ref S3BucketToWriteTo
+
+     InterviewLambdaASMRoleArn:
+       Description: ""
+       Value: !GetAtt InterviewLambdaASMRole.Arn
