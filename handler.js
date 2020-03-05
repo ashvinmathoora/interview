@@ -10,8 +10,6 @@ exports.hello = function(event,context,callback) {
 	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 	var dateTime = date+' '+time;
 	var stringToPrint = "Hello World on " + dateTime;
-	global.bucketlist = "";
-
 
 	// Call S3 to write a file
         var bucketName = process.env.S3BucketName;
@@ -19,7 +17,6 @@ exports.hello = function(event,context,callback) {
         var content = stringToPrint; 
         var params = { Bucket: bucketName, Key: keyName, Body: content };
         
-        console.log("Content is: " + content);
         s3.putObject(params, function (err, data) {
                 if (err)
                     console.log(err);
@@ -31,7 +28,6 @@ exports.hello = function(event,context,callback) {
         var response = {
                 "statusCode": 200,
                 "headers": {
-                        "my_header": "my_value",
                         "Content-Type": "text/html" 
                         },
                 "body": stringToPrint + 

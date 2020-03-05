@@ -23,8 +23,8 @@ service: helloWorld
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: ${opt:stage}
-  region: eu-west-1
+  stage: ${file(./conf/lambda.yml):stage}
+  region: ${file(./conf/lambda.yml):region}
 
 package:
   exclude:
@@ -48,15 +48,15 @@ functions:
      - http:
          path: hello
          method: get
-    memorySize: 256
+    memorySize: ${file(./conf/lambda.yml):memorySize}
     role: arn:aws:iam::226274645393:role/InterviewLambdaASMRole
     runtime: nodejs10.x
     environment:
       environment: dev
-      interviewee: "Ashvin Mathoora"
-      stage: ${opt:stage}
-      S3BucketName: ${opt:S3BucketName}
-      DestFile: ${opt:DestFile}
+      interviewee: ${file(./conf/lambda.yml):interviewee}
+      stage: ${file(./conf/lambda.yml):stage}
+      S3BucketName: ${file(./conf/lambda.yml):S3BucketName}
+      DestFile: ${file(./conf/lambda.yml):DestFile}
     tags:
       foo: bar
 
@@ -94,8 +94,8 @@ resources:
          Statement:
            -
              Resource:
-                - "arn:aws:s3:::${opt:S3BucketName}"
-                - "arn:aws:s3:::${opt:S3BucketName}/*"
+                - "arn:aws:s3:::${file(./conf/lambda.yml):S3BucketName}"
+                - "arn:aws:s3:::${file(./conf/lambda.yml):S3BucketName}/*"
              Effect: "Allow"
              Action:
                 - s3:Get*
@@ -105,7 +105,7 @@ resources:
     S3BucketToWriteTo:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${opt:S3BucketName}
+        BucketName: ${file(./conf/lambda.yml):S3BucketName}
         PublicAccessBlockConfiguration:
            BlockPublicAcls: true
            BlockPublicPolicy: true

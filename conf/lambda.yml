@@ -1,0 +1,6 @@
+interviewee: "Ashvin Mathoora"
+memorySize: 256
+region: eu-west-1
+stage: stage
+S3BucketName: interview-bucket-asm
+DestFile: hello.txt
